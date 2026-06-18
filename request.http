@@ -1,0 +1,22 @@
+### Lister toutes les tâches (vide au début)
+GET http://localhost:8080/tasks
+
+### Créer une tâche
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Apprendre Spring Boot"
+}
+
+### Créer une 2ème tâche
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "title": "Push sur GitHub",
+  "done": false
+}
+
+### Re-lister
+GET http://localhost:8080/tasks
