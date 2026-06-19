@@ -1,22 +1,44 @@
-### Lister toutes les tâches (vide au début)
+### 1. Lister (vide si redémarrage)
 GET http://localhost:8080/tasks
 
-### Créer une tâche
+### 2. Créer 3 tâches
 POST http://localhost:8080/tasks
 Content-Type: application/json
 
-{
-  "title": "Apprendre Spring Boot"
-}
+{ "title": "Apprendre Spring Boot" }
 
-### Créer une 2ème tâche
+###
 POST http://localhost:8080/tasks
 Content-Type: application/json
 
-{
-  "title": "Push sur GitHub",
-  "done": false
-}
+{ "title": "Coder l'API tasks" }
 
-### Re-lister
+###
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{ "title": "Faire le front React" }
+
+### 3. Lister (3 tâches)
 GET http://localhost:8080/tasks
+
+### 4. Récupérer la 2ème
+GET http://localhost:8080/tasks/2
+
+### 5. Marquer la 1ère comme faite
+PUT http://localhost:8080/tasks/1
+Content-Type: application/json
+
+{ "title": "Apprendre Spring Boot", "done": true }
+
+### 6. Supprimer la 3ème
+DELETE http://localhost:8080/tasks/3
+
+### 7. Lister (doit afficher 2 tâches : 1 done=true, 2 done=false)
+GET http://localhost:8080/tasks
+
+### 8. Erreur : tâche inexistante
+GET http://localhost:8080/tasks/99
+
+### 9. Erreur : delete sur une tâche inexistante
+DELETE http://localhost:8080/tasks/99
