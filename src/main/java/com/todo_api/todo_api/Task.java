@@ -1,6 +1,14 @@
 package com.todo_api.todo_api;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tasks")
+
+
 public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private boolean done;
@@ -9,8 +17,7 @@ public class Task {
 
     }
 
-    public Task(Long id, String title) {
-        this.id = id;
+    public Task(String title) {
         this.title = title;
         this.done = false;
     }

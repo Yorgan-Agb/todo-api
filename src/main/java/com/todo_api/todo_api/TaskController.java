@@ -9,50 +9,44 @@ import java.util.List;
 
 @RestController
 public class TaskController {
-   private List<Task> tasks = new ArrayList<>();
-    long nextId = 1;
+    private final TaskRepository taskRepository;
+
+    public TaskController (TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
     @GetMapping("/tasks")
     public List<Task> getAllTasks(){
-        return this.tasks;
+        return this.taskRepository.findAll();
     }
     @PostMapping("/tasks")
     @ResponseStatus(HttpStatus.CREATED)
     public Task createTasks(@RequestBody Task task) {
-        task.setId(nextId++);
-        tasks.add(task);
+        taskRepository.save(task);
         return task;
 
     }
     @GetMapping("/tasks/{id}")
     public Task getTaskById(@PathVariable Long id) {
-        for (Task task : this.tasks) {
-           if(task.getId().equals(id)){
-               return task;
-           }
-        }
-        throw new TaskNotFoundException("Task not found");
+        return this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(" task with id " + id + " not found"));
     }
 
     @PutMapping("/tasks/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask){
-        for (Task task : this.tasks) {
-            if(task.getId().equals(id)){
-            task.setTitle(updatedTask.getTitle());
-            task.setDone(updatedTask.isDone());
-            return task;
-            }
-        }
-        throw  new TaskNotFoundException("Task not found");
+      Task existingTask =  this.taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(" task with id " + id + " not found"));
+     existingTask.setTitle(updatedTask.getTitle());
+     existingTask.setDone(updatedTask.isDone());
+     return taskRepository.save(existingTask);
+
     }
 
     @DeleteMapping("/tasks/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable Long id){
-        boolean removed = this.tasks.removeIf(task -> task.getId().equals(id));
-        if (!removed){
-            throw new TaskNotFoundException("Task to delete doesn't exist");
+        if(!this.taskRepository.existsById(id)){
+            throw new TaskNotFoundException(" task with id " + id + " not found");
         }
+        this.taskRepository.deleteById(id);
     }
 
 }
