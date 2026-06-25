@@ -3,6 +3,7 @@ package com.todo_api.todo_api.controller;
 
 import com.todo_api.todo_api.model.Task;
 import com.todo_api.todo_api.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,14 +29,14 @@ public class TaskController {
 
     @PostMapping("/tasks")
     @ResponseStatus(HttpStatus.CREATED)
-    public Task createTasks(@RequestBody Task task) {
+    public Task createTasks(@Valid @RequestBody Task task) {
        return this.taskService.create(task);
 
     }
 
 
     @PutMapping("/tasks/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask){
+    public Task updateTask(@PathVariable Long id,@Valid @RequestBody Task updatedTask){
       return this.taskService.update(id, updatedTask);
 
     }
