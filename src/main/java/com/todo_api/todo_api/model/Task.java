@@ -2,6 +2,9 @@ package com.todo_api.todo_api.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
@@ -14,6 +17,11 @@ public class Task {
     @NotBlank(message = "Title can't be empty")
     private String title;
     private boolean done;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public Task() {
 
@@ -36,6 +44,14 @@ public class Task {
         return this.id;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public Category getCategory() {
+        return this.category;
+    }
+
     public void setDone(boolean done) {
         this.done = done;
     }
@@ -46,5 +62,13 @@ public class Task {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
